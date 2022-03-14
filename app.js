@@ -1,23 +1,30 @@
 import express from 'express'
-import {config} from "dotenv"; config()
+import {config } from 'dotenv'
+config()
 
 import db from './src/database/database.js'
 
-const app = express()
+import routes from "./src/routes/routes.js";
 
-app.use(express.json())
+const app = express()
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-    next()
+    next();
 })
 
 
+app.use(express.json())
+
+app.use(routes)
+
 db
-    .sync()
+    .sync({force: true})
+    // .sync()
     .then(() => {
         app.listen(5001)
+        console.log('app running on port 5001')
     })
 
