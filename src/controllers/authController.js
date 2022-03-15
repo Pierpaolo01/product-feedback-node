@@ -19,7 +19,7 @@ export default class authController {
                 }
             })
 
-            if(existingUser) res.status(422).send('Email already in use')
+            if (existingUser) res.status(422).send('Email already in use')
 
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
@@ -38,6 +38,7 @@ export default class authController {
             res.status(500).send({message: err})
         }
     }
+
     static loginHandler = async (req, res) => {
         const email = req.body.email
         const password = req.body.password
@@ -49,7 +50,10 @@ export default class authController {
 
             if (!bcrypt.compare(user.password, password)) res.status(401)
 
-            jwt.sign({user_id: user.id, email,}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+            const token = jwt.sign({user_id: user.id, email,}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+
+            res.status(201).send({token})
+
         } catch (err) {
             res.status(500).send({error: err})
         }
