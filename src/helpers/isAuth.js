@@ -13,3 +13,5 @@ const isAuth = (req, res, next) => {
 
     res.status(401).send("UNAUTHENTICATED")
 }
+
+export default isAuth

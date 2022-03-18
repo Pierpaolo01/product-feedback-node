@@ -5,6 +5,7 @@ config()
 import db from './src/database/database.js'
 
 import routes from "./src/routes/routes.js";
+import protectedRoutes from "./src/routes/protectedRoutes.js";
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 app.use(express.json())
 
 app.use(routes)
+app.use('/api', protectedRoutes)
 
 db
     .sync({force: true})
