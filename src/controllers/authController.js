@@ -23,7 +23,7 @@ export default class authController {
 
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
-            const refreshToken = jwt.sign({email, name,}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '15m'})
+            const refreshToken = jwt.sign({email, name,}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '15m'}, null)
 
             const newUser = await userModel.create({
                 name,
@@ -50,7 +50,7 @@ export default class authController {
 
             if (!bcrypt.compare(user.password, password)) res.status(401)
 
-            const token = jwt.sign({user_id: user.id, email,}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+            const token = jwt.sign({user_id: user.id, email,}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'}, null)
 
             res.status(201).send({token})
 
