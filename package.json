@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "startdev": "nodemon app.js",
+    "startdev": "nodemon app.js --mode=local",
+    "start": "node --trace-warnings app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

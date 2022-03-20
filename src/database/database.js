@@ -1,8 +1,11 @@
-import {Sequelize} from "sequelize";
+import { Sequelize } from "sequelize";
+import {config} from 'dotenv'
+config()
 
-const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER_NAME, '',
+const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER_NAME, process.env.DB_PASSWORD,
     {
         dialect: "mysql",
-        port: process.env.DB_PORT,
+        port: 3306,
     })
+
 export default db
