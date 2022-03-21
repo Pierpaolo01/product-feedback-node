@@ -7,6 +7,4 @@ routes.post('/signup', authController.signupHandler)
 
 routes.post('/login', authController.loginHandler)
 
-// routes.use('/api', protectedRoutes)
-
 export default routes

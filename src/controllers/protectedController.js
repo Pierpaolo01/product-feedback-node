@@ -2,6 +2,6 @@
 
 export default class protectedController {
     static test = async (req, res) => {
-        res.send('You are viewing protected content')
+        res.send('You are viewing protected content, your id is:' + req.userId)
     }
 }
