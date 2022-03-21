@@ -3,7 +3,12 @@ import suggestionsModel from "../models/suggestionsModel.js";
 
 export default class suggestionController {
     static getAllSuggestions = async (req, res) => {
-    //    TODO
+        try{
+            const suggestions = await suggestionsModel.findAll();
+            res.status(200).send(suggestions)
+        } catch (err) {
+            res.send(500).send('Something went wrong with fetching')
+        }
     }
 
     static createSuggestion = async (req, res) => {
