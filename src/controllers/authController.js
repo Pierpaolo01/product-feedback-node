@@ -46,7 +46,7 @@ export default class authController {
         try {
             const user = await userModel.findOne({where: {email}})
 
-            if (!user) res.status(401);
+            if (!user) res.status(401)
 
             bcrypt.compare(user.password, password, (err) => {
                 if (err) res.status(401)
