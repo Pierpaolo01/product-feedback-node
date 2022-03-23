@@ -13,5 +13,6 @@ suggestionRoutes.post('/create-suggestion', isAuth, suggestionController.createS
 
 suggestionRoutes.patch('/suggestion/:id', isAuth, suggestionController.patchSuggestion)
 
+suggestionRoutes.delete('/suggestion/:id', suggestionController.deleteSuggestion)
 
 export default suggestionRoutes

@@ -63,4 +63,17 @@ export default class suggestionController {
 
         }
     }
+
+    static deleteSuggestion = async (req, res) => {
+        const suggestionId = req.params.id
+
+        try {
+            const suggestion = await suggestionsModel.findByPk(suggestionId)
+
+            await suggestion.destroy()
+
+            res.status(204).send('DELETED')
+        } finally {
+        }
+    }
 }
