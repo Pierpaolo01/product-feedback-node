@@ -3,9 +3,17 @@ import suggestionsModel from "../models/suggestionsModel.js";
 
 export default class suggestionController {
     static getAllSuggestions = async (req, res) => {
+        console.log(req.query.category)
+        const queryParam = req.query.category ? req.query.category : ''
+        let suggestions;
         try{
-            const suggestions = await suggestionsModel.findAll()
+
+            if (queryParam) suggestions = await suggestionsModel.findAll({where: {category: queryParam}})
+            if(!queryParam) suggestions = await suggestionsModel.findAll()
+
+            if (!suggestions) res.status(204)
             res.status(200).send(suggestions)
+
         } catch (err) {
             res.send(500).send('Something went wrong with fetching')
         }
