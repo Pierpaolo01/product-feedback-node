@@ -4,10 +4,22 @@ import suggestionsModel from "../models/suggestionsModel.js";
 export default class suggestionController {
     static getAllSuggestions = async (req, res) => {
         try{
-            const suggestions = await suggestionsModel.findAll();
+            const suggestions = await suggestionsModel.findAll()
             res.status(200).send(suggestions)
         } catch (err) {
             res.send(500).send('Something went wrong with fetching')
+        }
+    }
+
+    static getSingleSuggestion = async (req, res) => {
+        const suggestionId = req.params.id
+
+        try {
+            const suggestion = await suggestionsModel.findByPk(suggestionId)
+            console.log(suggestionId)
+            res.status(200).send(suggestion)
+        } catch (err) {
+            res.status(500).send('Failed')
         }
     }
 
@@ -18,7 +30,7 @@ export default class suggestionController {
             category: req.body.category,
             likes: 0,
             comments: {testUser: 'shesh nice post'},
-            userId: req.body.userId
+            userId: req.user.id
         }
 
         try {
@@ -28,6 +40,27 @@ export default class suggestionController {
 
         } catch (err) {
             res.status(500).send('error when creating new suggestion')
+        }
+    }
+
+    static patchSuggestion = async (req, res) => {
+        const suggestionId = req.params.id
+        const userId = req.body.userId
+
+        try {
+            const suggestion = await suggestionsModel.findByPk(suggestionId)
+
+            if (userId !== suggestion.userId) res.status(403)
+
+            suggestion.title = req.body.title
+            suggestion.category = req.body.category
+            suggestion.description = req.body.description
+
+            await suggestion.save()
+            res.status(204).send(suggestion)
+
+        } finally {
+
         }
     }
 }

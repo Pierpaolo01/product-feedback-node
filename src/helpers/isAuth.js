@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken'
 import {config} from 'dotenv'
+import userModel from "../models/userModel.js";
 config()
 
-const isAuth = (req, res, next) => {
+const isAuth = async (req, res, next) => {
     const token = req.get('Authorization').split(' ')[1];
 
     if (!token) res.status(401).send("UNAUTHENTICATED")
@@ -11,7 +12,9 @@ const isAuth = (req, res, next) => {
 
     try {
         decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-        req.userId = decodedToken.user_id
+
+        req.user = await userModel.findByPk(decodedToken.user_id)
+
         next()
     } catch (err) {
         console.log({err})
@@ -20,3 +23,4 @@ const isAuth = (req, res, next) => {
 }
 
 export default isAuth
+
