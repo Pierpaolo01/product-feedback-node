@@ -46,15 +46,19 @@ export default class authController {
         try {
             const user = await userModel.findOne({where: {email}})
 
-            if (!user) res.status(401);
+            if (!user) res.status(401)
 
-            if (!bcrypt.compare(user.password, password)) res.status(401)
+            bcrypt.compare(user.password, password, (err) => {
+                if (err) res.status(401)
 
-            const token = jwt.sign({user_id: user.id, email,}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'}, null)
+                const token = jwt.sign({user_id: user.id, email,}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'}, null)
+                res.status(201).send({token})
+            })
 
-            res.status(201).send({token})
+
 
         } catch (err) {
+            console.log({err})
             res.status(500).send({error: err})
         }
 

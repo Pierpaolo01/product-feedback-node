@@ -1,17 +1,26 @@
 import jwt from 'jsonwebtoken'
 import {config} from 'dotenv'
+import userModel from "../models/userModel.js";
 config()
 
-const isAuth = (req, res, next) => {
-    const token = req.header.Authorization;
+const isAuth = async (req, res, next) => {
+    const token = req.get('Authorization').split(' ')[1];
 
-    if (!token) res.status(401).send('No token')
+    if (!token) res.status(401).send("UNAUTHENTICATED")
 
-    if (jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)) {
+    let decodedToken
+
+    try {
+        decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+
+        req.user = await userModel.findByPk(decodedToken.user_id)
+
         next()
+    } catch (err) {
+        console.log({err})
+        res.status(403).send('Authorization failed')
     }
-
-    res.status(401).send("UNAUTHENTICATED")
 }
 
 export default isAuth
+
