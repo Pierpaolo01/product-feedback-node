@@ -1,4 +1,4 @@
-import suggestionsModel from "../models/suggestionsModel.js";
+import suggestionModel from "../models/suggestionModel.js";
 
 
 export default class suggestionController {
@@ -8,8 +8,8 @@ export default class suggestionController {
         let suggestions;
         try{
 
-            if (queryParam) suggestions = await suggestionsModel.findAll({where: {category: queryParam}})
-            if(!queryParam) suggestions = await suggestionsModel.findAll()
+            if (queryParam) suggestions = await suggestionModel.findAll({where: {category: queryParam}})
+            if(!queryParam) suggestions = await suggestionModel.findAll()
 
             if (!suggestions) res.status(204)
             res.status(200).send(suggestions)
@@ -23,7 +23,7 @@ export default class suggestionController {
         const suggestionId = req.params.id
 
         try {
-            const suggestion = await suggestionsModel.findByPk(suggestionId)
+            const suggestion = await suggestionModel.findByPk(suggestionId)
             console.log(suggestionId)
             res.status(200).send(suggestion)
         } catch (err) {
@@ -43,7 +43,7 @@ export default class suggestionController {
 
         try {
 
-            const createdSuggestion = await suggestionsModel.create(newSuggestion)
+            const createdSuggestion = await suggestionModel.create(newSuggestion)
             res.status(201).send(createdSuggestion)
 
         } catch (err) {
@@ -56,7 +56,7 @@ export default class suggestionController {
         const userId = req.body.userId
 
         try {
-            const suggestion = await suggestionsModel.findByPk(suggestionId)
+            const suggestion = await suggestionModel.findByPk(suggestionId)
 
             if (userId !== suggestion.userId) res.status(403)
 
@@ -76,7 +76,7 @@ export default class suggestionController {
         const suggestionId = req.params.id
 
         try {
-            const suggestion = await suggestionsModel.findByPk(suggestionId)
+            const suggestion = await suggestionModel.findByPk(suggestionId)
 
             await suggestion.destroy()
 

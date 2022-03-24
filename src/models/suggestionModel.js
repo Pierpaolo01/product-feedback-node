@@ -1,7 +1,7 @@
 import database from "../database/database.js";
 import {DataTypes} from "sequelize";
 
-const suggestionsModel = database.define('suggestion', {
+const suggestionModel = database.define('suggestion', {
     title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -22,4 +22,4 @@ const suggestionsModel = database.define('suggestion', {
     }
 })
 
-export default suggestionsModel
+export default suggestionModel

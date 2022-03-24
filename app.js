@@ -6,8 +6,9 @@ import db from './src/database/database.js'
 
 import authRoutes from "./src/routes/authRoutes.js";
 import suggestionRoutes from "./src/routes/suggestionRoutes.js";
-import suggestionsModel from "./src/models/suggestionsModel.js";
+import suggestionsModel from "./src/models/suggestionModel.js";
 import userModel from "./src/models/userModel.js";
+import commentModel from "./src/models/commentModel.js";
 
 const app = express()
 
@@ -27,10 +28,12 @@ app.use('/api', suggestionRoutes)
 
 //Relationships <3
 suggestionsModel.belongsTo(userModel)
+commentModel.belongsTo(userModel)
+commentModel.belongsTo(suggestionsModel)
 
 db
-    // .sync({force: true})
-    .sync()
+    .sync({force: true})
+    // .sync()
     .then(() => {
         app.listen(5001)
         console.log('app running on port 5001')
