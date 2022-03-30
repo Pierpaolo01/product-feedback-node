@@ -6,8 +6,7 @@ const suggestionRoutes = express.Router()
 
 suggestionRoutes.get('/suggestions', isAuth, suggestionController.getAllSuggestions)
 
-suggestionRoutes.get('/suggestions/:id', isAuth, suggestionController.getSingleSuggestion)
-
+suggestionRoutes.get('/suggestion/:id', isAuth, suggestionController.getSingleSuggestion)
 
 suggestionRoutes.post('/create-suggestion', isAuth, suggestionController.createSuggestion)
 
