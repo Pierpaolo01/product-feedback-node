@@ -1,6 +1,7 @@
 import express from "express"
 import isAuth from "../helpers/isAuth.js";
 import suggestionController from "../controllers/suggestionController.js";
+import CommentController from "../controllers/commentController.js";
 
 const suggestionRoutes = express.Router()
 
@@ -12,6 +13,10 @@ suggestionRoutes.post('/create-suggestion', isAuth, suggestionController.createS
 
 suggestionRoutes.patch('/suggestion/:id', isAuth, suggestionController.patchSuggestion)
 
-suggestionRoutes.delete('/suggestion/:id', suggestionController.deleteSuggestion)
+suggestionRoutes.delete('/suggestion/:id', isAuth, suggestionController.deleteSuggestion)
+
+suggestionRoutes.get('/suggestions/:sug_id/comments', isAuth, CommentController.getAllComments)
+
+suggestionRoutes.post('/suggestion/:id/comment', isAuth, CommentController.createComment)
 
 export default suggestionRoutes

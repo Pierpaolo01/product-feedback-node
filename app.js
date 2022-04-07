@@ -25,6 +25,7 @@ app.use(express.json())
 //Routes
 app.use(authRoutes)
 app.use('/api', suggestionRoutes)
+// app.use('/api', commentsRoutes)
 
 //Relationships <3
 suggestionsModel.belongsTo(userModel)
@@ -32,8 +33,8 @@ commentModel.belongsTo(userModel)
 commentModel.belongsTo(suggestionsModel)
 
 db
-    .sync({force: true})
-    // .sync()
+    // .sync({force: true})
+    .sync()
     .then(() => {
         app.listen(5001)
         console.log('app running on port 5001')
