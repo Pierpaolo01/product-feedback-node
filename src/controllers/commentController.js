@@ -1,4 +1,5 @@
 import commentModel from "../models/commentModel.js";
+import userModel from "../models/userModel.js";
 
 
 export default class CommentController {
@@ -22,16 +23,21 @@ export default class CommentController {
 
     static getAllComments = async (req, res) => {
         const suggestionId = req.params.id
-
+        console.log(suggestionId)
         try {
             const suggestionComments = await commentModel.findAll({
                 where: {
                     suggestionId,
-                }
+                },
+                include: userModel,
             })
+
+            console.log({suggestionComments})
 
             res.status(200).send({comments: suggestionComments,})
         } catch (e) {
+            console.log({ shitError: e })
+            res.status(500).send(e)
 
         }
     }

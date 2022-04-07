@@ -15,7 +15,7 @@ suggestionRoutes.patch('/suggestion/:id', isAuth, suggestionController.patchSugg
 
 suggestionRoutes.delete('/suggestion/:id', isAuth, suggestionController.deleteSuggestion)
 
-suggestionRoutes.get('/suggestions/:sug_id/comments', isAuth, CommentController.getAllComments)
+suggestionRoutes.get('/suggestion/:id/comments', isAuth, CommentController.getAllComments)
 
 suggestionRoutes.post('/suggestion/:id/comment', isAuth, CommentController.createComment)
 
