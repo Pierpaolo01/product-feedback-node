@@ -52,12 +52,15 @@ export default class suggestionController {
 
     static patchSuggestion = async (req, res) => {
         const suggestionId = req.params.id
-        const userId = req.user.userId
+        const userId = req.user.id
 
         try {
             const suggestion = await suggestionModel.findByPk(suggestionId)
 
-            if (userId !== suggestion.userId) res.status(403)
+            if (!req.user.permissions.includes('UPDATE_ANY_SUGGESTION' || userId !== suggestion.userId)) {
+                res.status(403).send()
+                return
+            }
 
             suggestion.title = req.body.title
             suggestion.category = req.body.category
@@ -73,13 +76,18 @@ export default class suggestionController {
 
     static deleteSuggestion = async (req, res) => {
         const suggestionId = req.params.id
+        const userId = req.user.id
 
         try {
             const suggestion = await suggestionModel.findByPk(suggestionId)
+            if (userId !== suggestion.userId || !req.user.permissions.includes('DELETE_ANY_SUGGESTION'))  {
+                res.status(403).send()
+                return
+            }
 
             await suggestion.destroy()
 
-            res.status(204).send('DELETED')
+            res.status(204).send()
         } finally {
         }
     }

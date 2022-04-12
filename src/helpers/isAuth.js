@@ -6,7 +6,10 @@ config()
 const isAuth = async (req, res, next) => {
     const token = req.get('Authorization').split(' ')[1];
 
-    if (!token) res.status(401).send("UNAUTHENTICATED")
+    if (!token) {
+        res.status(401).send("UNAUTHENTICATED")
+        return
+    }
 
     let decodedToken
 

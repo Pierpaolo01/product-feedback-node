@@ -70,7 +70,6 @@ export default class authController {
         try {
 
             const authenticatedUser = await userModel.findOne({where: {id: userId}})
-            console.log(authenticatedUser)
             if(!authenticatedUser) res.status(403).send("unauthenticate")
 
             res.status(200)
