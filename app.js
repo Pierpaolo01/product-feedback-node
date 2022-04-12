@@ -25,7 +25,6 @@ app.use(express.json())
 //Routes
 app.use(authRoutes)
 app.use('/api', suggestionRoutes)
-// app.use('/api', commentsRoutes)
 
 //Relationships <3
 suggestionsModel.belongsTo(userModel)
@@ -35,7 +34,24 @@ commentModel.belongsTo(suggestionsModel)
 db
     // .sync({force: true})
     .sync()
-    .then(() => {
+    .then(async () => {
+
+        const default_user = await userModel.findOne({where: { name: process.env.DEFAULT_USER_NM }})
+
+        if (!default_user) {
+            await userModel.create({
+                name: process.env.DEFAULT_USER_NM,
+                email: process.env.DEFAULT_USER_EM,
+                hashed_password: process.env.DEFAULT_USER_PW,
+                permissions: [
+                    'DELETE_ANY_SUGGESTION',
+                    'UPDATE_ANY_SUGGESTION',
+                    'DELETE_ANY_COMMENT',
+
+                ]
+            })
+        }
+
         app.listen(5001)
         console.log('app running on port 5001')
     })

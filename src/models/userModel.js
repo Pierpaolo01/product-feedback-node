@@ -12,6 +12,9 @@ const userModel = db.define('user', {
         allowNull: false,
         unique: true
     },
+    permissions: {
+        type: DataTypes.JSON,
+    },
     email_validated_at: {
         type: DataTypes.STRING,
     },

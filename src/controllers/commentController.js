@@ -34,7 +34,7 @@ export default class CommentController {
 
             console.log({suggestionComments})
 
-            res.status(200).send({comments: suggestionComments,})
+            res.status(200).send({data: suggestionComments,})
         } catch (e) {
             console.log({ shitError: e })
             res.status(500).send(e)
@@ -52,7 +52,7 @@ export default class CommentController {
                 res.status(403).send("Unauthorized")
             }
 
-            deleteComment.destroy()
+            await deleteComment.destroy()
 
             res.status(203).send(deleteComment)
         } catch (e) {

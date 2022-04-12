@@ -22,20 +22,22 @@ export default class authController {
             if (existingUser) res.status(422).send('Email already in use')
 
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
+            console.log(await bcrypt.hash("2", 10))
 
             const refreshToken = jwt.sign({email, name,}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '15m'}, null)
 
             const newUser = await userModel.create({
                 name,
                 email,
+                permissions: [],
                 hashed_password: hashedPassword,
                 refresh_token: refreshToken,
             })
 
-            res.status(201).send({user: newUser})
+            res.status(201).send({data: newUser})
 
         } catch (err) {
-            res.status(500).send({message: err})
+            res.status(500).send({data: err})
         }
     }
 
@@ -55,12 +57,29 @@ export default class authController {
                 res.status(201).send({token})
             })
 
-
-
         } catch (err) {
             console.log({err})
             res.status(500).send({error: err})
         }
 
+    }
+
+    static getAuthenticatedUser = async (req, res) => {
+        const userId = req.user.id
+
+        try {
+
+            const authenticatedUser = await userModel.findOne({where: {id: userId}})
+            console.log(authenticatedUser)
+            if(!authenticatedUser) res.status(403).send("unauthenticate")
+
+            res.status(200)
+            res.send({data: authenticatedUser})
+
+        } catch (e) {
+            console.log({errors: e})
+            res.status(500)
+            res.send("Error getting user")
+        }
     }
 }

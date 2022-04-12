@@ -25,7 +25,7 @@ export default class suggestionController {
         try {
             const suggestion = await suggestionModel.findByPk(suggestionId)
             console.log(suggestionId)
-            res.status(200).send(suggestion)
+            res.status(200).send({data: suggestion})
         } catch (err) {
             res.status(500).send('Failed')
         }
@@ -37,7 +37,6 @@ export default class suggestionController {
             description: req.body.description,
             category: req.body.category,
             likes: 0,
-            comments: {testUser: 'shesh nice post'},
             userId: req.user.id
         }
 
@@ -53,7 +52,7 @@ export default class suggestionController {
 
     static patchSuggestion = async (req, res) => {
         const suggestionId = req.params.id
-        const userId = req.body.userId
+        const userId = req.user.userId
 
         try {
             const suggestion = await suggestionModel.findByPk(suggestionId)
