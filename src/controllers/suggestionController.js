@@ -56,19 +56,15 @@ export default class suggestionController {
 
         try {
             const suggestion = await suggestionModel.findByPk(suggestionId)
+            if (userId === suggestion.userId || req.user.permissions.includes('UPDATE_ANY_SUGGESTION')) {
 
-            if (!req.user.permissions.includes('UPDATE_ANY_SUGGESTION' || userId !== suggestion.userId)) {
-                res.status(403).send()
-                return
+                suggestion.title = req.body.title
+                suggestion.category = req.body.category
+                suggestion.description = req.body.description
+
+                await suggestion.save()
+                res.status(204).send(suggestion)
             }
-
-            suggestion.title = req.body.title
-            suggestion.category = req.body.category
-            suggestion.description = req.body.description
-
-            await suggestion.save()
-            res.status(204).send(suggestion)
-
         } finally {
 
         }
@@ -80,14 +76,14 @@ export default class suggestionController {
 
         try {
             const suggestion = await suggestionModel.findByPk(suggestionId)
-            if (userId !== suggestion.userId || !req.user.permissions.includes('DELETE_ANY_SUGGESTION'))  {
+            if (userId === suggestion.userId || req.user.permissions.includes('DELETE_ANY_SUGGESTION')) {
+                await suggestion.destroy()
+
+                res.status(204).send()
+            } else {
                 res.status(403).send()
-                return
             }
 
-            await suggestion.destroy()
-
-            res.status(204).send()
         } finally {
         }
     }

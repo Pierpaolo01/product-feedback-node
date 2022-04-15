@@ -44,17 +44,19 @@ export default class CommentController {
 
     static deleteComment = async (req, res) => {
         const userId = req.user.id
+        const commentId = req.params.commentId
 
         try {
-            const deleteComment = await commentModel.destroy()
+            const deleteComment = await commentModel.findByPk(commentId)
 
-            if (deleteComment.userId !== userId) {
+            if (deleteComment.userId === userId || req.user.permissions.includes("DELETE_ANY_COMMENT")) {
+                await deleteComment.destroy()
+
+                res.status(203).send(deleteComment)
+            } else {
                 res.status(403).send("Unauthorized")
             }
 
-            await deleteComment.destroy()
-
-            res.status(203).send(deleteComment)
         } catch (e) {
             res.status(500).send({error: "something went wrong when deleting comment"})
         }

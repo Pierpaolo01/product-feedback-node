@@ -2,7 +2,6 @@ import express from "express"
 import isAuth from "../helpers/isAuth.js";
 import suggestionController from "../controllers/suggestionController.js";
 import CommentController from "../controllers/commentController.js";
-import suggestionModel from "../models/suggestionModel.js";
 
 const suggestionRoutes = express.Router()
 
@@ -20,6 +19,6 @@ suggestionRoutes.get('/suggestion/:id/comments', isAuth, CommentController.getAl
 
 suggestionRoutes.post('/suggestion/:id/comment', isAuth, CommentController.createComment)
 
-suggestionRoutes.delete('/suggestion/:id/comment', isAuth, CommentController.deleteComment)
+suggestionRoutes.delete('/suggestion/:id/comment/:commentId', isAuth, CommentController.deleteComment)
 
 export default suggestionRoutes
