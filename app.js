@@ -3,12 +3,12 @@ import {config } from 'dotenv'
 config()
 
 import db from './src/database/database.js'
-
+import routes from './src/routes/routes.js'
 import authRoutes from "./src/routes/authRoutes.js";
-import suggestionRoutes from "./src/routes/suggestionRoutes.js";
 import suggestionsModel from "./src/models/suggestionModel.js";
 import userModel from "./src/models/userModel.js";
 import commentModel from "./src/models/commentModel.js";
+import replyModel from './src/models/replyModel.js'
 
 const app = express()
 
@@ -24,13 +24,16 @@ app.use(express.json())
 
 //Routes
 app.use(authRoutes)
-app.use('/api', suggestionRoutes)
+routes(app)
 
 //Relationships <3
 suggestionsModel.belongsTo(userModel)
+
 commentModel.belongsTo(userModel)
 commentModel.belongsTo(suggestionsModel)
 
+replyModel.belongsTo(commentModel)
+replyModel.belongsTo(userModel)
 db
     // .sync({force: true})
     .sync()

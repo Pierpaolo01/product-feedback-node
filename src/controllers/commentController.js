@@ -14,7 +14,7 @@ export default class CommentController {
                 userId,
                 suggestionId,
             })
-            console.log({newComment})
+
             res.status(201).send({newComment})
         }catch (err) {
             console.log({err})
@@ -59,6 +59,23 @@ export default class CommentController {
 
         } catch (e) {
             res.status(500).send({error: "something went wrong when deleting comment"})
+        }
+    }
+
+    static createCommentReply = async (req, res) => {
+        const commentId = req.params.id
+        const userId = req.user.userId
+        const reply = req.body.reply
+        try {
+            const createdComment = await commentModel.create({
+                reply,
+                commentId,
+                userId,
+            })
+
+            res.status(201).send({data: createdComment})
+        } catch (e) {
+            res.status(500).send(e)
         }
     }
 }

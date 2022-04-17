@@ -19,10 +19,12 @@ export default class authController {
                 }
             })
 
-            if (existingUser) res.status(422).send('Email already in use')
+            if (existingUser) {
+                res.status(422).send('Email already in use')
+                return
+            }
 
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
-            console.log(await bcrypt.hash("2", 10))
 
             const refreshToken = jwt.sign({email, name,}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '15m'}, null)
 
