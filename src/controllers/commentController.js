@@ -99,4 +99,23 @@ export default class CommentController {
             console.log(e)
         }
     }
+
+    static deleteReply = async (req, res) => {
+        const userId = req.user.id;
+        const replyId = req.params.replyId
+
+        try {
+            const reply = await replyModel.findByPk(replyId)
+
+            if (reply.userId === userId || req.user.permissions.includes("DELETE_ANY_COMMENT")) {
+                await reply.destroy()
+
+                res.status(203).send(reply)
+            } else {
+                res.status(403).send("Unauthorized")
+            }
+        } catch (e) {
+            res.status(500).send(e)
+        }
+    }
 }
