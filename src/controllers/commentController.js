@@ -1,5 +1,6 @@
 import commentModel from "../models/commentModel.js";
 import userModel from "../models/userModel.js";
+import replyModel from "../models/replyModel.js";
 
 
 export default class CommentController {
@@ -62,12 +63,31 @@ export default class CommentController {
         }
     }
 
+    static getAllCommentReplies = async (req, res) => {
+        const commentId = req.params.id
+
+        try {
+
+            const commentReplies = await replyModel.findAll({
+                where: {
+                    commentId,
+                },
+                include: userModel
+            })
+
+            res.status(200).send({data: commentReplies})
+
+        } catch (e) {
+            res.status(500).send(e)
+        }
+    }
+
     static createCommentReply = async (req, res) => {
         const commentId = req.params.id
-        const userId = req.user.userId
+        const userId = req.user.id
         const reply = req.body.reply
         try {
-            const createdComment = await commentModel.create({
+            const createdComment = await replyModel.create({
                 reply,
                 commentId,
                 userId,
@@ -76,6 +96,7 @@ export default class CommentController {
             res.status(201).send({data: createdComment})
         } catch (e) {
             res.status(500).send(e)
+            console.log(e)
         }
     }
 }

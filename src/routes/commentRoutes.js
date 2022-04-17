@@ -10,6 +10,8 @@ commentRoutes.post('/suggestion/:id/comment', isAuth, CommentController.createCo
 
 commentRoutes.delete('/suggestion/:id/comment/:commentId', isAuth, CommentController.deleteComment)
 
-commentRoutes.post('comment/:id', CommentController.createCommentReply)
+commentRoutes.get('/comment/:id/replies', isAuth, CommentController.getAllCommentReplies)
+
+commentRoutes.post('/comment/:id/replies', isAuth, CommentController.createCommentReply)
 
 export default commentRoutes
