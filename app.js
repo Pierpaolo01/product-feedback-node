@@ -29,11 +29,11 @@ routes(app)
 //Relationships <3
 suggestionsModel.belongsTo(userModel)
 
-commentModel.belongsTo(userModel)
-commentModel.belongsTo(suggestionsModel)
+commentModel.belongsTo(userModel, {onDelete: 'CASCADE'})
+commentModel.belongsTo(suggestionsModel, {onDelete: 'CASCADE'})
 
-replyModel.belongsTo(commentModel)
-replyModel.belongsTo(userModel)
+replyModel.belongsTo(commentModel, {onDelete: 'CASCADE'})
+replyModel.belongsTo(userModel, {onDelete: 'CASCADE'})
 db
     // .sync({force: true})
     .sync()
